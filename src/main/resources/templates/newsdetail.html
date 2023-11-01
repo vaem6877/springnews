@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>news - detail</title>
+</head>
+<style>
+    .update_form {
+        display: none;
+    }
+
+    .update_btn {
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div>
+        <h3>제목 : [[${list.get().getTitle()}]]</h3>
+        <h5>작성자 : [[${list.get().getWriter()}]]</h5>
+        <h6>작성일 : [[${list.get().getWritedate()}]]</h6>
+        <span>조회수 : [[${list.get().getCnt()}]]</span>
+        <p>[[${list.get().getContent}]]</p>
+    </div>
+    <div class="mod">
+        <span class="update_btn">수정하기</span>
+        <a th:href="@{|/delete/${list.get().getId()}|}">삭제하기</a>
+    </div>
+    <div class="update_form">
+        <form th:action="@{ '/update/' + ${list.get().getId()}}" method="post">
+            <input type="text" id="writer" name="writer" th:placeholder="${list.get().getWriter()}" readonly>
+            <input type="text" id="title" name="title" th:placeholder="${list.get().getTitle()}">
+            <textarea name="content" id="content" cols="30" rows="10">[[${list.get().getContent}]]</textarea>
+            <input type="submit" value="작성">
+        </form>
+    </div>
+    <script>
+        let update_btn = document.querySelector(".update_btn");
+        update_btn.addEventListener("click", (e) => {
+            document.querySelector('.update_form').style.display = "block";
+        })
+    </script>
+</body>
+
+</html>

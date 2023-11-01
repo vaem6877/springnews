@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <title>news</title>
+</head>
+<style>
+    @font-face {
+        font-family: 'HakgyoansimWoojuR';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    h1,
+    .list_header {
+        font-family: 'HakgyoansimWoojuR';
+        font-weight: bold;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+
+    header,
+    main {
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .list_header,
+    .list_body {
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    .list_header {
+        border-bottom: 2px solid #145ADB;
+        font-size: 24px;
+    }
+
+    .list_body {
+        border-bottom: 1px solid #ccc;
+
+    }
+
+    #list_main {
+        width: 100%;
+        line-height: 2;
+    }
+
+    .list_title {
+        width: 55%;
+    }
+
+    .list_username {
+        width: 15%;
+        text-align: center;
+    }
+
+    .list_date {
+        width: 15%;
+        text-align: center;
+
+    }
+
+    .dateexp {
+        font-size: 10px;
+        vertical-align: middle;
+    }
+
+    .list_count {
+        width: 15%;
+        text-align: center;
+    }
+
+    .search_wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search_wrap input {
+        width: 300px;
+    }
+</style>
+
+<body>
+    <header>
+        <h1>News 게시판</h1>
+    </header>
+    <main>
+        <section id="list_main">
+
+            <th:block th:if="${ list }">
+                <div class="article_wrapper">
+                    <div class="list_header">
+                        <span class="list_title">제목</span>
+                        <span class="list_username">작성자</span>
+                        <span class="list_date">작성일</span>
+                        <span class="list_count">조회수</span>
+                    </div>
+                    <article th:each="lst : ${list}" class="list_body">
+                        <a th:href="@{|/one/${lst.getId}|}" class="list_title" th:text="${lst.getTitle()}">제목</a>
+                        <span class="list_username" th:text="${lst.getWriter()}">작성자명</span>
+                        <span class="list_date dateexp"
+                            th:text="${#temporals.format(lst.writedate, 'yyyy-MM-dd HH:mm')}">시간</span>
+                        <span class="list_count" th:text="${lst.getCnt()}">카운터</span>
+                    </article>
+                </div>
+            </th:block>
+            <th:block th:if="${ msg }">
+                [[${msg}]]
+            </th:block>
+        </section>
+        <section>
+            <form action="/search" method="get" class="search_wrap">
+                <input type="text" name="keyword" class="search_input">
+                <input type="submit" value="검색">
+            </form>
+        </section>
+        <section id="write_main">
+            <form action="/insert" method="post" class="write_form">
+                <p>
+                    <input type="text" id="writer" name="writer" placeholder="이름">
+                    <input type="text" id="title" name="title" placeholder="글 제목">
+                </p>
+                <textarea name="content" id="content"></textarea>
+                <input type="submit" value="작성">
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>
