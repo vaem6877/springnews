@@ -84,14 +84,18 @@
         text-align: center;
     }
 
-    .search_wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+
+    .mode{
+        width: 100%;
     }
 
-    .search_wrap input {
-        width: 300px;
+    #search_main,
+    #write_main{
+        display: none;
+    }
+    #content{
+        width: 350px;
+        resize: none;
     }
 </style>
 
@@ -123,23 +127,46 @@
                 [[${msg}]]
             </th:block>
         </section>
-        <section>
-            <form action="/search" method="get" class="search_wrap">
-                <input type="text" name="keyword" class="search_input">
-                <input type="submit" value="검색">
-            </form>
-        </section>
-        <section id="write_main">
-            <form action="/insert" method="post" class="write_form">
-                <p>
-                    <input type="text" id="writer" name="writer" placeholder="이름">
-                    <input type="text" id="title" name="title" placeholder="글 제목">
-                </p>
-                <textarea name="content" id="content"></textarea>
-                <input type="submit" value="작성">
-            </form>
+        <section class="mode">
+            <div class="mode_btns">
+                <button id="btn_searchmode">글쓰기</button>
+                <button id="btn_writemode">검색</button> 
+            </div>
+            <div id="search_main">
+                <form action="/search" method="get" class="search_wrap">
+                    <input type="text" name="keyword" class="search_input">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
+
+            <div id="write_main">
+                <form action="/insert" method="post" class="write_form">
+                    <p>
+                        <input type="text" id="writer" name="writer" placeholder="이름">
+                        <input type="text" id="title" name="title" placeholder="글 제목">
+                    </p>
+                    <textarea name="content" id="content"></textarea>
+                    <input type="submit" value="작성">
+                </form>
+
+            </div>
         </section>
     </main>
+    <script>
+        let searchMain = document.querySelector("#search_main");
+        let writeMain = document.querySelector("#write_main");
+        let searchBtn = document.querySelector("#btn_searchmode");
+        let writeBtn = document.querySelector("#btn_writemode");
+
+        searchBtn.addEventListener("click",(e)=>{
+            searchMain.style.display = "block";
+            writeMain.style.display = "none";
+        })
+        writeBtn.addEventListener("click",(e)=>{
+            searchMain.style.display = "none";
+            writeMain.style.display = "block";
+        })
+    </script>
 </body>
 
 </html>

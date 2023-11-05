@@ -18,7 +18,7 @@ public class NewsController {
 
     @GetMapping(value="/newsmain")
     public ModelAndView newsMain(){
-        List<News> list = newsRepository.findAll();
+        List<News> list = newsRepository.findAllByOrderByIdDesc();
         ModelAndView mav = new ModelAndView();
         if(list.size() != 0){
             mav.addObject("list",list);
@@ -46,7 +46,7 @@ public class NewsController {
 
     @GetMapping(value = "/search")
     public ModelAndView search(@RequestParam("keyword") String keyword){
-        List<News> list = newsRepository.findByTitleContains(keyword);
+        List<News> list = newsRepository.findByTitleContainsOrderByIdDesc(keyword);
         ModelAndView mav = new ModelAndView();
         if(list.size() != 0){
             mav.addObject("list",list);
@@ -58,20 +58,17 @@ public class NewsController {
     }
 
     @PostMapping(value="/insert")
-    @Transactional
     public String newsInsert(News news){
         newsRepository.save(news);
         return "redirect:/newsmain";
     }
 
     @GetMapping(value="/delete/{newsid}")
-    @Transactional
     public String newsDelete(@PathVariable("newsid") Integer id){
         newsRepository.deleteById(id);
         return "redirect:/newsmain";
     }
     @PostMapping(value="/update/{newsid}")
-    @Transactional
     public ModelAndView newsUpdate(@PathVariable("newsid") Integer id,News news){
         ModelAndView mav = new ModelAndView();
         News target = newsRepository.findById(id).get();

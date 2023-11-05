@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface NewsRepository extends JpaRepository<News, Integer> {
     //글쓰기
-    News save(News news);
-    List<News> findByTitleContains(String keyword);
+    List<News> findAllByOrderByIdDesc();
+    List<News> findByTitleContainsOrderByIdDesc(String keyword);
 }
